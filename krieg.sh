@@ -2,6 +2,8 @@
 
 export KRIEG_SCRIPT="true"
 
+KRIEG_ROOT=`pwd`
+
 TEXTRESET=$(tput sgr0)
 TEXTGREEN=$(tput setaf 2)
 TEXTRED=$(tput setaf 1)
@@ -91,6 +93,54 @@ Sync () {
 	fi 
 }
 
+Status () {
+		EchoGreen "Checking Status of sub repos..."
+		cd scripts
+		TEMP=`git status`
+			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
+				EchoGreen "Scripts repo is Up to Date"
+			else
+				EchoRed "Scripts repo has uncommited, unstaged or unpushed changes!!!"
+			fi
+		cd ${KRIEG_ROOT}
+		
+		cd OP5-OP5T
+		TEMP=`git status`
+			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
+				EchoGreen "OP5-OP5T repo Up to Date"
+			else
+				EchoRed "OP5-OP5T repo has uncommited, unstaged or unpushed changes!!!"
+			fi
+		cd ${KRIEG_ROOT}
+		
+		cd AnyKernelBase
+		TEMP=`git status`
+			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
+				EchoGreen "AnyKernelBase repo Up to Date"
+			else
+				EchoRed "AnyKernelBase repo has uncommited, unstaged or unpushed changes!!!"
+			fi
+		cd ${KRIEG_ROOT}
+		
+		cd ToolChains/aarch64-linux-android-4.9
+		TEMP=`git status`
+			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
+				EchoGreen "4.9 Toolchain repo Up to Date"
+			else
+				EchoRed "4.9 Toolchain repo has uncommited, unstaged or unpushed changes!!!"
+			fi
+		cd ${KRIEG_ROOT}
+		
+		cd ToolChains/linux-x86
+		TEMP=`git status`
+			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
+				EchoGreen "Clang Toolchain repo Up to Date"
+			else
+				EchoRed "Clang Toolchain repo has uncommited, unstaged or unpushed changes!!!"
+			fi
+		cd ${KRIEG_ROOT}
+}
+
 Spam () {
 	echo ""
 	echo ""
@@ -125,10 +175,14 @@ elif [ $1 = "build" ]; then
 	else
 		Build
 	fi
+elif [ $1 = "status" ]; then
+	Status
 else
 	Sync
 	Build
 fi
 
-Spam
+if [ $1 != "status" ]; then
+	Spam
+fi
 unset KRIEG_SCRIPT

@@ -97,7 +97,9 @@ Sync () {
 				echo ""
 				git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
 				cd ..
-	fi 
+		fi 
+		Spam
+	fi
 }
 
 Status () {
@@ -194,7 +196,4 @@ else
 	Build
 fi
 
-if [ $1 != "status" ]; then
-	Spam
-fi
 unset KRIEG_SCRIPT

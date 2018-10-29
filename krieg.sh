@@ -13,6 +13,7 @@ EchoGreen () {
 	echo "${TEXTGREEN}$1${TEXTRESET}"
 }
 Sync () {
+	git fetch && git pull
 	if [ -d scripts ]; then
 			echo ""
 			EchoGreen "Scripts directory found. Syncing."

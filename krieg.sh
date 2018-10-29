@@ -8,88 +8,95 @@ TEXTRESET=$(tput sgr0)
 TEXTGREEN=$(tput setaf 2)
 TEXTRED=$(tput setaf 1)
 
+SYNCUNSAFE=false
+
 EchoRed () {
 	echo "${TEXTRED}$1${TEXTRESET}"
 }
 EchoGreen () {
 	echo "${TEXTGREEN}$1${TEXTRESET}"
 }
+
 Sync () {
-	git fetch && git pull
-	if [ -d scripts ]; then
-			echo ""
-			EchoGreen "Scripts directory found. Syncing."
-			echo ""
-			cd scripts
-			git fetch && git pull
-			cd ..
-		else
-			echo ""
-			EchoRed "Scripts directory not found. Cloning."
-			echo ""
-			git clone https://github.com/Krieg-Kernel/scripts.git
-	fi
+	Status
+	if [ "$SYNCUNSAFE" = true ]; then
+		EchoRed "You have unsaved changes, exiting sync."
+	else
+		git fetch && git pull
+		if [ -d scripts ]; then
+				echo ""
+				EchoGreen "Scripts directory found. Syncing."
+				echo ""
+				cd scripts
+				git fetch && git pull
+				cd ..
+			else
+				echo ""
+				EchoRed "Scripts directory not found. Cloning."
+				echo ""
+				git clone https://github.com/Krieg-Kernel/scripts.git
+		fi
 
-	if [ -d OP5-OP5T ]; then
-			echo ""
-			EchoGreen "Kernel Source directory found. Syncing."
-			echo ""
-			cd OP5-OP5T
-			git fetch && git pull
-			cd ..
-		else
-			echo ""
-			EchoRed "Kernel Source directory not found. Cloning."
-			echo ""
-			git clone https://github.com/Krieg-Kernel/OP5-OP5T.git
-	fi
+		if [ -d OP5-OP5T ]; then
+				echo ""
+				EchoGreen "Kernel Source directory found. Syncing."
+				echo ""
+				cd OP5-OP5T
+				git fetch && git pull
+				cd ..
+			else
+				echo ""
+				EchoRed "Kernel Source directory not found. Cloning."
+				echo ""
+				git clone https://github.com/Krieg-Kernel/OP5-OP5T.git
+		fi
 
-	if [ -d AnyKernelBase ]; then
-			echo ""
-			EchoGreen "AnyKernelBase directory found. Syncing."
-			echo ""
-			cd AnyKernelBase
-			git fetch && git pull
-			cd ..
-		else
-			echo ""
-			EchoRed "AnyKernelBase directory not found. Cloning."
-			echo ""
-			git clone https://github.com/Krieg-Kernel/AnyKernelBase.git
-	fi
+		if [ -d AnyKernelBase ]; then
+				echo ""
+				EchoGreen "AnyKernelBase directory found. Syncing."
+				echo ""
+				cd AnyKernelBase
+				git fetch && git pull
+				cd ..
+			else
+				echo ""
+				EchoRed "AnyKernelBase directory not found. Cloning."
+				echo ""
+				git clone https://github.com/Krieg-Kernel/AnyKernelBase.git
+		fi
 
-	mkdir -p ToolChains
+		mkdir -p ToolChains
 
-	if [ -d ToolChains/aarch64-linux-android-4.9 ]; then
-			echo ""
-			EchoGreen "4.9 ToolChain found. Syncing."
-			echo ""
-			cd ToolChains/aarch64-linux-android-4.9
-			git fetch && git pull
-			cd ../..
-		else
-			cd ToolChains
-			echo ""
-			EchoRed "4.9 ToolChain not found. Cloning."
-			echo ""
-			git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
-			cd ..
-	fi
+		if [ -d ToolChains/aarch64-linux-android-4.9 ]; then
+				echo ""
+				EchoGreen "4.9 ToolChain found. Syncing."
+				echo ""
+				cd ToolChains/aarch64-linux-android-4.9
+				git fetch && git pull
+				cd ../..
+			else
+				cd ToolChains
+				echo ""
+				EchoRed "4.9 ToolChain not found. Cloning."
+				echo ""
+				git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
+				cd ..
+		fi
 
-	if [ -d ToolChains/linux-x86 ]; then
-			echo ""
-			EchoGreen "Clang ToolChain found. Syncing."
-			echo ""
-			cd ToolChains/linux-x86
-			git fetch && git pull
-			cd ../..
-		else
-			cd ToolChains
-			echo ""
-			EchoRed "Clang ToolChain not found. Cloning."
-			echo ""
-			git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
-			cd ..
+		if [ -d ToolChains/linux-x86 ]; then
+				echo ""
+				EchoGreen "Clang ToolChain found. Syncing."
+				echo ""
+				cd ToolChains/linux-x86
+				git fetch && git pull
+				cd ../..
+			else
+				cd ToolChains
+				echo ""
+				EchoRed "Clang ToolChain not found. Cloning."
+				echo ""
+				git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
+				cd ..
 	fi 
 }
 
@@ -101,6 +108,7 @@ Status () {
 				EchoGreen "Scripts repo is Up to Date"
 			else
 				EchoRed "Scripts repo has uncommited, unstaged or unpushed changes!!!"
+				SYNCUNSAFE=true
 			fi
 		cd ${KRIEG_ROOT}
 		
@@ -110,6 +118,7 @@ Status () {
 				EchoGreen "OP5-OP5T repo Up to Date"
 			else
 				EchoRed "OP5-OP5T repo has uncommited, unstaged or unpushed changes!!!"
+				SYNCUNSAFE=true
 			fi
 		cd ${KRIEG_ROOT}
 		
@@ -119,6 +128,7 @@ Status () {
 				EchoGreen "AnyKernelBase repo Up to Date"
 			else
 				EchoRed "AnyKernelBase repo has uncommited, unstaged or unpushed changes!!!"
+				SYNCUNSAFE=true
 			fi
 		cd ${KRIEG_ROOT}
 		
@@ -128,6 +138,7 @@ Status () {
 				EchoGreen "4.9 Toolchain repo Up to Date"
 			else
 				EchoRed "4.9 Toolchain repo has uncommited, unstaged or unpushed changes!!!"
+				SYNCUNSAFE=true
 			fi
 		cd ${KRIEG_ROOT}
 		
@@ -137,6 +148,7 @@ Status () {
 				EchoGreen "Clang Toolchain repo Up to Date"
 			else
 				EchoRed "Clang Toolchain repo has uncommited, unstaged or unpushed changes!!!"
+				SYNCUNSAFE=true
 			fi
 		cd ${KRIEG_ROOT}
 }

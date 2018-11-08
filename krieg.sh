@@ -95,7 +95,7 @@ Sync () {
 				echo ""
 				EchoRed "Clang ToolChain not found. Cloning."
 				echo ""
-				git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
+				git clone https://github.com/Krieg-Kernel/linux-x86
 				cd ..
 		fi 
 		Spam

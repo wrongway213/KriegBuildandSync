@@ -106,10 +106,11 @@ Status () {
 		EchoGreen "Checking Status of sub repos..."
 		cd scripts
 		TEMP=`git status`
+		echo $TEMP
 			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
 				EchoGreen "Scripts repo is Up to Date"
 			else
-				EchoRed "Scripts repo has uncommited, unstaged or unpushed changes!!!"
+				EchoRed "Scripts repo is out of sync with remote!!!"
 				SYNCUNSAFE=true
 			fi
 		cd ${KRIEG_ROOT}
@@ -119,7 +120,7 @@ Status () {
 			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
 				EchoGreen "OP5-OP5T repo Up to Date"
 			else
-				EchoRed "OP5-OP5T repo has uncommited, unstaged or unpushed changes!!!"
+				EchoRed "OP5-OP5T repo is out of sync with remote!!!"
 				SYNCUNSAFE=true
 			fi
 		cd ${KRIEG_ROOT}
@@ -129,7 +130,7 @@ Status () {
 			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
 				EchoGreen "AnyKernelBase repo Up to Date"
 			else
-				EchoRed "AnyKernelBase repo has uncommited, unstaged or unpushed changes!!!"
+				EchoRed "AnyKernelBase repo is out of sync with remote!!!"
 				SYNCUNSAFE=true
 			fi
 		cd ${KRIEG_ROOT}
@@ -139,7 +140,7 @@ Status () {
 			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
 				EchoGreen "4.9 Toolchain repo Up to Date"
 			else
-				EchoRed "4.9 Toolchain repo has uncommited, unstaged or unpushed changes!!!"
+				EchoRed "4.9 Toolchain repo is out of sync with remote!!!"
 				SYNCUNSAFE=true
 			fi
 		cd ${KRIEG_ROOT}
@@ -149,7 +150,7 @@ Status () {
 			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
 				EchoGreen "Clang Toolchain repo Up to Date"
 			else
-				EchoRed "Clang Toolchain repo has uncommited, unstaged or unpushed changes!!!"
+				EchoRed "Clang Toolchain repo is out of sync with remote!!!"
 				SYNCUNSAFE=true
 			fi
 		cd ${KRIEG_ROOT}

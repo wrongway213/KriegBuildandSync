@@ -179,18 +179,18 @@ Spam () {
 }
 
 Build () {
-	scripts/build.sh $1
+	scripts/build.sh "$1"
 }
 
-if [ $1 = "sync" ]; then
+if [ "$1" = "sync" ]; then
 	Sync
-elif [ $1 = "build" ]; then
-	if [ -z $2 ]; then
-		Build $2
+elif [ "$1" = "build" ]; then
+	if [ ! -z "$2" ]; then
+		Build "$2"
 	else
 		Build
 	fi
-elif [ $1 = "status" ]; then
+elif [ "$1" = "status" ]; then
 	Status
 else
 	Sync

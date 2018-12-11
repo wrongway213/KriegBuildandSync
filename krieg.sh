@@ -185,16 +185,12 @@ Build () {
 if [ "$1" = "sync" ]; then
 	Sync
 elif [ "$1" = "build" ]; then
-	if [ ! -z "$2" ]; then
-		Build "$2"
-	else
-		Build
-	fi
+	Build "$2" "$3"
 elif [ "$1" = "status" ]; then
 	Status
 else
 	Sync
-	Build
+	Build "$2" "$3"
 fi
 
 unset KRIEG_SCRIPT

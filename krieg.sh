@@ -8,8 +8,6 @@ TEXTRESET=$(tput sgr0)
 TEXTGREEN=$(tput setaf 2)
 TEXTRED=$(tput setaf 1)
 
-SYNCUNSAFE=false
-
 EchoRed () {
 	echo "${TEXTRED}$1${TEXTRESET}"
 }
@@ -18,142 +16,29 @@ EchoGreen () {
 }
 
 Sync () {
-	Status
-	if [ "$SYNCUNSAFE" = true ]; then
-		EchoRed "You have unsaved changes, exiting sync."
-	else
-		git fetch && git pull
-		if [ -d scripts ]; then
-				echo ""
-				EchoGreen "Scripts directory found. Syncing."
-				echo ""
-				cd scripts
-				git fetch && git pull
-				cd ..
-			else
-				echo ""
-				EchoRed "Scripts directory not found. Cloning."
-				echo ""
-				git clone https://github.com/Krieg-Kernel/scripts.git
-		fi
-
-		if [ -d OP5-OP5T ]; then
-				echo ""
-				EchoGreen "Kernel Source directory found. Syncing."
-				echo ""
-				cd OP5-OP5T
-				git fetch && git pull
-				cd ..
-			else
-				echo ""
-				EchoRed "Kernel Source directory not found. Cloning."
-				echo ""
-				git clone https://github.com/Krieg-Kernel/OP5-OP5T.git
-		fi
-
-		if [ -d AnyKernelBase ]; then
-				echo ""
-				EchoGreen "AnyKernelBase directory found. Syncing."
-				echo ""
-				cd AnyKernelBase
-				git fetch && git pull
-				cd ..
-			else
-				echo ""
-				EchoRed "AnyKernelBase directory not found. Cloning."
-				echo ""
-				git clone https://github.com/Krieg-Kernel/AnyKernelBase.git
-		fi
-
-		mkdir -p Toolchains
-
-		if [ -d Toolchains/aarch64-linux-android-4.9 ]; then
-				echo ""
-				EchoGreen "4.9 ToolChain found. Syncing."
-				echo ""
-				cd Toolchains/aarch64-linux-android-4.9
-				git fetch && git pull
-				cd ../..
-			else
-				cd Toolchains
-				echo ""
-				EchoRed "4.9 ToolChain not found. Cloning."
-				echo ""
-				git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
-				cd ..
-		fi
-
-		if [ -d Toolchains/linux-x86 ]; then
-				echo ""
-				EchoGreen "Clang ToolChain found. Syncing."
-				echo ""
-				cd Toolchains/linux-x86
-				git fetch && git pull
-				cd ../..
-			else
-				cd Toolchains
-				echo ""
-				EchoRed "Clang ToolChain not found. Cloning."
-				echo ""
-				git clone --depth=1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
-				cd ..
-		fi 
-		Spam
-	fi
-}
-
-Status () {
-		EchoGreen "Checking Status of sub repos..."
-		cd scripts
-		TEMP=`git status`
-		echo $TEMP
-			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
-				EchoGreen "Scripts repo is Up to Date"
-			else
-				EchoRed "Scripts repo is out of sync with remote!!!"
-				SYNCUNSAFE=true
-			fi
-		cd ${KRIEG_ROOT}
-		
-		cd OP5-OP5T
-		TEMP=`git status`
-			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
-				EchoGreen "OP5-OP5T repo Up to Date"
-			else
-				EchoRed "OP5-OP5T repo is out of sync with remote!!!"
-				SYNCUNSAFE=true
-			fi
-		cd ${KRIEG_ROOT}
-		
-		cd AnyKernelBase
-		TEMP=`git status`
-			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
-				EchoGreen "AnyKernelBase repo Up to Date"
-			else
-				EchoRed "AnyKernelBase repo is out of sync with remote!!!"
-				SYNCUNSAFE=true
-			fi
-		cd ${KRIEG_ROOT}
-		
-		cd Toolchains/aarch64-linux-android-4.9
-		TEMP=`git status`
-			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
-				EchoGreen "4.9 Toolchain repo Up to Date"
-			else
-				EchoRed "4.9 Toolchain repo is out of sync with remote!!!"
-				SYNCUNSAFE=true
-			fi
-		cd ${KRIEG_ROOT}
-		
-		cd Toolchains/linux-x86
-		TEMP=`git status`
-			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
-				EchoGreen "Clang Toolchain repo Up to Date"
-			else
-				EchoRed "Clang Toolchain repo is out of sync with remote!!!"
-				SYNCUNSAFE=true
-			fi
-		cd ${KRIEG_ROOT}
+  git fetch && git pull
+  for i in "scripts" "OP5-OP5T" "AnyKernelBase" "Toolchains/aarch64-linux-android-4.9" "Toolchains/linux-x86"; do
+    if [ -d "$i" ]; then
+      echo ""
+		  EchoGreen "$i directory found. Syncing."
+			echo ""
+      cd "$i"
+      git fetch && git pull
+      cd ${KRIEG_ROOT}
+    else
+      echo ""
+      EchoRed "$i directory not found. Cloning."
+      echo ""
+      case "$i" in
+        "scripts") git clone --depth=1 https://github.com/Krieg-Kernel/scripts.git;;
+        "OP5-OP5T") git clone --depth=1 https://github.com/Krieg-Kernel/OP5-OP5T.git;;
+        "AnyKernelBase") git clone --depth=1 https://github.com/Krieg-Kernel/AnyKernelBase.git;;
+        "Toolchains/aarch64-linux-android-4.9") git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9;;
+        "Toolchains/linux-x86") git clone --depth=1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86;;
+      esac
+    fi
+  done
+  Spam
 }
 
 Spam () {
@@ -179,15 +64,13 @@ Spam () {
 }
 
 Build () {
-	scripts/build.sh "$1"
+	scripts/build.sh "$1" "$2"
 }
 
 if [ "$1" = "sync" ]; then
 	Sync
 elif [ "$1" = "build" ]; then
 	Build "$2" "$3"
-elif [ "$1" = "status" ]; then
-	Status
 else
 	Sync
 	Build "$2" "$3"

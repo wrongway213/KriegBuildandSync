@@ -23,6 +23,7 @@ Sync () {
 		  EchoGreen "$i directory found. Syncing."
 			echo ""
       cd "$i"
+      git reset --hard HEAD~1
       git fetch && git pull
       cd ${KRIEG_ROOT}
     else

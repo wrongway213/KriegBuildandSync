@@ -73,7 +73,7 @@ elif [ "$1" = "build" ]; then
 	Build "$2" "$3"
 else
 	Sync
-	Build "$2" "$3"
+	Build "$1" "$2"
 fi
 
 unset KRIEG_SCRIPT

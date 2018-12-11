@@ -104,56 +104,21 @@ Sync () {
 
 Status () {
 		EchoGreen "Checking Status of sub repos..."
-		cd scripts
-		TEMP=`git status`
-		echo $TEMP
-			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
-				EchoGreen "Scripts repo is Up to Date"
-			else
-				EchoRed "Scripts repo is out of sync with remote!!!"
-				SYNCUNSAFE=true
-			fi
-		cd ${KRIEG_ROOT}
-		
-		cd OP5-OP5T
-		TEMP=`git status`
-			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
-				EchoGreen "OP5-OP5T repo Up to Date"
-			else
-				EchoRed "OP5-OP5T repo is out of sync with remote!!!"
-				SYNCUNSAFE=true
-			fi
-		cd ${KRIEG_ROOT}
-		
-		cd AnyKernelBase
-		TEMP=`git status`
-			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
-				EchoGreen "AnyKernelBase repo Up to Date"
-			else
-				EchoRed "AnyKernelBase repo is out of sync with remote!!!"
-				SYNCUNSAFE=true
-			fi
-		cd ${KRIEG_ROOT}
-		
-		cd Toolchains/aarch64-linux-android-4.9
-		TEMP=`git status`
-			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
-				EchoGreen "4.9 Toolchain repo Up to Date"
-			else
-				EchoRed "4.9 Toolchain repo is out of sync with remote!!!"
-				SYNCUNSAFE=true
-			fi
-		cd ${KRIEG_ROOT}
-		
-		cd Toolchains/linux-x86
-		TEMP=`git status`
-			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
-				EchoGreen "Clang Toolchain repo Up to Date"
-			else
-				EchoRed "Clang Toolchain repo is out of sync with remote!!!"
-				SYNCUNSAFE=true
-			fi
-		cd ${KRIEG_ROOT}
+    for i in "scripts" "OP5-OP5T" "AnyKernelBase" "Toolchains/aarch64-linux-android-4.9" "Toolchains/linux-x86"; do
+      if [ -d "$i" ]; then
+        cd $i
+        TEMP=`git status`
+        if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
+          EchoGreen "$i repo is Up to Date"
+        else
+          EchoRed "$i repo is out of sync with remote!!!"
+          SYNCUNSAFE=true
+        fi
+        cd ${KRIEG_ROOT}
+      else
+        EchoRed "$i repo doesn't exist!!!"
+      fi
+    done
 }
 
 Spam () {

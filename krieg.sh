@@ -30,9 +30,9 @@ Sync () {
       EchoRed "$i directory not found. Cloning."
       echo ""
       case "$i" in
-        "scripts") git clone --depth=1 https://github.com/Krieg-Kernel/scripts.git "OP5-OP5T";;
-        "OP5-OP5T") git clone --depth=1 https://github.com/Krieg-Kernel/OP5-OP5T.git "AnyKernelBase";;
-        "AnyKernelBase") git clone --depth=1 https://github.com/Krieg-Kernel/AnyKernelBase.git;;
+        "scripts") git clone --depth=1 https://github.com/Krieg-Kernel/scripts.git "scripts";;
+        "OP5-OP5T") git clone --depth=1 https://github.com/Krieg-Kernel/OP5-OP5T.git "OP5-OP5T";;
+        "AnyKernelBase") git clone --depth=1 https://github.com/Krieg-Kernel/AnyKernelBase.git "AnyKernelBase";;
         "Toolchains/aarch64-linux-android-4.9") git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 "Toolchains/aarch64-linux-android-4.9";;
         "Toolchains/linux-x86") git clone --depth=1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 "Toolchains/linux-x86";;
       esac

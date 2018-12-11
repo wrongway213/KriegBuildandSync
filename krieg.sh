@@ -179,7 +179,7 @@ Spam () {
 }
 
 Build () {
-	scripts/build.sh "$1"
+	scripts/build.sh "$1" "$2"
 }
 
 if [ "$1" = "sync" ]; then

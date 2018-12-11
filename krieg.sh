@@ -65,37 +65,37 @@ Sync () {
 				git clone https://github.com/Krieg-Kernel/AnyKernelBase.git
 		fi
 
-		mkdir -p ToolChains
+		mkdir -p Toolchains
 
-		if [ -d ToolChains/aarch64-linux-android-4.9 ]; then
+		if [ -d Toolchains/aarch64-linux-android-4.9 ]; then
 				echo ""
 				EchoGreen "4.9 ToolChain found. Syncing."
 				echo ""
-				cd ToolChains/aarch64-linux-android-4.9
+				cd Toolchains/aarch64-linux-android-4.9
 				git fetch && git pull
 				cd ../..
 			else
-				cd ToolChains
+				cd Toolchains
 				echo ""
 				EchoRed "4.9 ToolChain not found. Cloning."
 				echo ""
-				git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
+				git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
 				cd ..
 		fi
 
-		if [ -d ToolChains/linux-x86 ]; then
+		if [ -d Toolchains/linux-x86 ]; then
 				echo ""
 				EchoGreen "Clang ToolChain found. Syncing."
 				echo ""
-				cd ToolChains/linux-x86
+				cd Toolchains/linux-x86
 				git fetch && git pull
 				cd ../..
 			else
-				cd ToolChains
+				cd Toolchains
 				echo ""
 				EchoRed "Clang ToolChain not found. Cloning."
 				echo ""
-				git clone https://github.com/Krieg-Kernel/linux-x86
+				git clone --depth=1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
 				cd ..
 		fi 
 		Spam
@@ -135,7 +135,7 @@ Status () {
 			fi
 		cd ${KRIEG_ROOT}
 		
-		cd ToolChains/aarch64-linux-android-4.9
+		cd Toolchains/aarch64-linux-android-4.9
 		TEMP=`git status`
 			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
 				EchoGreen "4.9 Toolchain repo Up to Date"
@@ -145,7 +145,7 @@ Status () {
 			fi
 		cd ${KRIEG_ROOT}
 		
-		cd ToolChains/linux-x86
+		cd Toolchains/linux-x86
 		TEMP=`git status`
 			if [[ ${TEMP} == *"Your branch is up to date"* ]] && [[ ${TEMP} != *"Untracked files"* ]]; then
 				EchoGreen "Clang Toolchain repo Up to Date"

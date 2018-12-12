@@ -83,10 +83,8 @@ while true; do
   esac
 done
 
-if $buildshit; then
-  [ -z "$version" ] && { EchoRed "NO Version number specified. Naming zips as TEST}"; version="TEST"; }
-  [ -z "$depth" ] && { EchoRed "Depth not specified. Pulling everything"; }
-fi
+$buildshit && [ -z "$version" ] && { EchoRed "NO Version number specified. Naming zips as TEST}"; version="TEST"; }
+$syncshit && [ -z "$depth" ] && EchoRed "Depth not specified. Pulling everything"
 
 if $syncshit && $buildshit; then
   Sync

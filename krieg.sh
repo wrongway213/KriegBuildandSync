@@ -6,7 +6,7 @@ EchoRed () {
 EchoGreen () {
 	echo "${TEXTGREEN}$1${TEXTRESET}"
 }
-Sync () {
+sync () {
   git fetch && git pull
   for i in "scripts" "OP5-OP5T" "AnyKernelBase" "Toolchains/aarch64-linux-android-4.9" "Toolchains/linux-x86"; do
     if [ -d "$i" ]; then

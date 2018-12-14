@@ -127,7 +127,6 @@ fi
 
 # Clean up if anything is remaining.
 rm -rf ${REPO_ROOT}/OP5-OP5T/out
-cd ${REPO_ROOT}/OP5-OP5T
 
 while true; do
   case "$1" in
@@ -147,6 +146,7 @@ elif ! $buildshit; then
     Usage
 fi
 
+cd ${REPO_ROOT}/OP5-OP5T
 [ -z $buildtype ] || { case "$(echo "$buildtype" | tr '[:upper:]' '[:lower:]')" in
                         "all")
                             ZIPNAME=""
